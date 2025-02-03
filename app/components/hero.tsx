@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-const hero = () => {
+const Hero = () => {
   return (
     <>
       <div className="flex flex-col w-full max-w-[1440px] bg-[#F5F5F5] mx-auto pt-2 pb-2">
@@ -42,19 +42,8 @@ const hero = () => {
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
     </>
   );
 }
 
-export default hero
+export default Hero;

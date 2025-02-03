@@ -2,12 +2,9 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-
-
  const Herobest = () => {
    return (
      <>
-
         <div className="relative bg-white px-4  mt-8  py-4">
         <div className="flex flex-col items-start sm:items-center md:items-start ml-4 sm:ml-0">
           <h2 className="font-bold text-2xl text-[#111111] mb-3 ml-4">

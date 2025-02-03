@@ -6,15 +6,15 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { TrackingData } from "@/type";
 
 function TrackShipment() {
-  const [labelId, setLabelId] = useState(""); // State for labelId input
+  const [labelId, setLabelId] = useState(""); 
   const [trackingData, setTrackingData] = useState<TrackingData | null>(null); // State for tracking data
-  const [loading, setLoading] = useState(false); // State for loading spinner
-  const [error, setError] = useState<string | null>(null); // State for error messages
+  const [loading, setLoading] = useState(false); 
+  const [error, setError] = useState<string | null>(null); 
 
   // Get query parameters and router
   const searchParams = useSearchParams();
   const router = useRouter();
-  const queryLabelId = searchParams?.get("labelId") || ""; // Safely fetch labelId
+  const queryLabelId = searchParams?.get("labelId") || ""; 
 
   
   // Function to handle form submission
@@ -24,29 +24,27 @@ function TrackShipment() {
       return;
     }
   
-    setLoading(true); // Show loading spinner
-    setError(null); // Clear previous errors
+    setLoading(true); 
+    setError(null);
   
     try {
-      // Update the URL with the labelId query parameter
+      
       router.replace(`/tracking?labelId=${labelId}`);
   
-      // Make API request to track shipment
       const response = await axios.get(`/api/shipengine/tracking/${labelId}`);
-      setTrackingData(response.data); // Set tracking data
+      setTrackingData(response.data); 
     } catch (err) {
       console.error("Error tracking shipment:", err);
-      setError("Failed to track shipment. Please check the label ID and try again."); // Set error message
+      setError("Failed to track shipment. Please check the label ID and try again."); 
     } finally {
-      setLoading(false); // Hide loading spinner
+      setLoading(false); 
     }
   }, [router]);
 
-  // Automatically fetch tracking data if labelId is present in query params
   useEffect(() => {
     if (queryLabelId) {
-      setLabelId(queryLabelId); // Set labelId from query params
-      handleSubmit(queryLabelId); // Automatically submit the form
+      setLabelId(queryLabelId); 
+      handleSubmit(queryLabelId); 
     }
   }, [handleSubmit, queryLabelId]);
 
@@ -54,8 +52,6 @@ function TrackShipment() {
       <div className="min-h-screen bg-gray-100 py-8 text-black">
         <div className="max-w-4xl mx-auto px-4">
           <h1 className="text-3xl font-bold text-center mb-8">Track Your Shipment</h1>
-
-          {/* Input Form */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -86,14 +82,14 @@ function TrackShipment() {
             </div>
           </form>
 
-          {/* Error Message */}
+    
           {error && (
             <div className="mt-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md">
               {error}
             </div>
           )}
 
-          {/* Tracking Details */}
+    
           {trackingData && (
             <div className="mt-8 bg-white p-6 rounded-lg shadow-md">
               <h2 className="text-2xl font-bold mb-4">Tracking Details</h2>

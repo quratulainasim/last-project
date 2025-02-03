@@ -1,3 +1,4 @@
+
 import { client } from "@/sanity/lib/client";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,8 +38,7 @@ console.log(data);
                 height={348}
                 className="mx-auto"
                 />
-             
-    
+
             <div className="pt-4">
           
               <p className="text-sm text-[#9E3500] font-medium ml-5">{val.status}</p>

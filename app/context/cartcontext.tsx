@@ -26,7 +26,6 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
 
-  // Load cart from localStorage after the component mounts
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
     if (savedCart) {
@@ -34,7 +33,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  // Update localStorage whenever the cart changes
+  
   useEffect(() => {
     if (cart.length > 0) {
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -86,7 +85,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const taxRate = 0.1; // Example: 10%
+  const taxRate = 0.1; 
   const tax = parseFloat((subtotal * taxRate).toFixed(2));
   const total = parseFloat((subtotal + tax).toFixed(2));
 

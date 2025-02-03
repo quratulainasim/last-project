@@ -1,13 +1,13 @@
-import { createClient } from '@sanity/client';
-import axios from 'axios';
-import dotenv from 'dotenv';
-import { fileURLToPath } from 'url';
+import { createClient } from "@sanity/client";
+import axios from "axios";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 import path from 'path';
 
 // Load environment variables from .env.local
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+dotenv.config({ path: path.resolve(__dirname, "../.env.local") });
 
 // Create Sanity client
 const client = createClient({
@@ -15,14 +15,14 @@ const client = createClient({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   useCdn: false,
   token: process.env.SANITY_API_TOKEN,
-  apiVersion: '2021-08-31'
+  apiVersion: "2021-08-31"
 });
 
 
 async function uploadImageToSanity(imageUrl) {
   try {
     console.log(`Uploading image: ${imageUrl}`);
-    const response = await axios.get(imageUrl, { responseType: 'arraybuffer' });
+    const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
     const buffer = Buffer.from(response.data);
     const asset = await client.assets.upload('image', buffer, {
       filename: imageUrl.split('/').pop()
@@ -30,17 +30,17 @@ async function uploadImageToSanity(imageUrl) {
     console.log(`Image uploaded successfully: ${asset._id}`);
     return asset._id;
   } catch (error) {
-    console.error('Failed to upload image:', imageUrl, error);
+    console.error("Failed to upload image:", imageUrl, error);
     return null;
   }
 }
 
 async function importData() {
   try {
-    console.log('migrating data please wait...');
+    console.log("migrating data please wait...");
 
     // API endpoint containing car data
-    const response = await axios.get('https://template-03-api.vercel.app/api/products');
+    const response = await axios.get("https://template-03-api.vercel.app/api/products");
     const products = response.data.data;
     console.log("products ==>> ", products);
 
@@ -52,7 +52,7 @@ async function importData() {
       }
 
       const sanityProduct = {
-        _type: 'product',
+        _type: "product",
         productName: product.productName,
         category: product.category,
         price: product.price,
@@ -61,9 +61,9 @@ async function importData() {
         status: product.status,
         description: product.description,
         image: imageRef ? {
-          _type: 'image',
+          _type: "image",
           asset: {
-            _type: 'reference',
+            _type: "reference",
             _ref: imageRef,
           },
         } : undefined,
@@ -72,9 +72,9 @@ async function importData() {
       await client.create(sanityProduct);
     }
 
-    console.log('Data migrated successfully!');
+    console.log("Data migrated successfully!");
   } catch (error) {
-    console.error('Error in migrating data ==>> ', error);
+    console.error("Error in migrating data ==>> ", error);
   }
 }
 

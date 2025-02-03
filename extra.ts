@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
     parcels,
   }: { shipeToAddress: Address; parcels: Package[] } = await req.json();
   const shipengine = new ShipEngine({
-    apiKey: "TEST_iIy3znDRXdSdxsWh84bETYTt3fj/n73y+jUC8iNxwEk4",
+    apiKey: "TEST_SNu1R9i+1ye7B8cao02YbfHW5TAMWGHFRmrFfx8KeQ4",
   });
 
   try {
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
         packages: parcels,
       },
       rateOptions: {
-        carrierIds: ["se-1553146", "se-1553147", "se-1553148", "se-1553167"],
+        carrierIds: ["se-1755861", "se-1755862", "se-1755865", "se-1755883"],
         // serviceCodes: ["ups_ground"],
       },
     });

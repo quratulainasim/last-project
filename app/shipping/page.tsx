@@ -5,12 +5,9 @@ import { Address, Rate, trackingObjType } from "@/type";
 import { cartProductsWhichCanBeShipped } from "@/data";
 import Link from "next/link";
 
-// don't judge frontend code i have build it to uderstand shipengine api 😁
-
 const ShippingRatesPage = () => {
-  // to ship address
-  // i added defualt address which help you understand structure of address
-  const [shipeToAddress, setshipeToAddress] = useState<Address>({
+  
+  const [shipToAddress, setshipeToAddress] = useState<Address>({
     name: "John Doe",
     phone: "+1 555-678-1234",
     addressLine1: "1600 Pennsylvania Avenue NW",
@@ -19,7 +16,7 @@ const ShippingRatesPage = () => {
     stateProvince: "DC",
     postalCode: "20500",
     countryCode: "US",
-    addressResidentialIndicator: "no", // 'no' means a commercial address
+    addressResidentialIndicator: "no", 
   });
 
   const [rates, setRates] = useState<Rate[]>([]);
@@ -29,7 +26,6 @@ const ShippingRatesPage = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
 
-  // Function to handle form submission of shipping rates
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -38,8 +34,8 @@ const ShippingRatesPage = () => {
 
     try {
       const response = await axios.post("/api/shipengine/get-rates", {
-        shipeToAddress,
-        // map the cart products which can be shipped and use only weight and dimensions
+        shipToAddress,
+        
         packages: cartProductsWhichCanBeShipped.map((product) => ({
           weight: product.weight,
           dimensions: product.dimensions,
@@ -57,7 +53,6 @@ const ShippingRatesPage = () => {
     }
   };
 
-  // Function to create label from selected rate
   const handleCreateLabel = async () => {
     if (!rateId) {
       alert("Please select a rate to create a label.");
@@ -67,16 +62,13 @@ const ShippingRatesPage = () => {
     setErrors([]);
 
     try {
-      // get rateId which user selected
       const response = await axios.post("/api/shipengine/label", {
         rateId: rateId,
       });
       const labelData = response.data;
-      // see the response of label in browser
       console.log(labelData);
-      // set pdf url
+  
       setLabelPdf(labelData.labelDownload.href);
-      // set tracking obj
       setTrackingObj({
         trackingNumber: labelData.trackingNumber,
         labelId: labelData.labelId,
@@ -108,9 +100,9 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Name"
-                value={shipeToAddress.name}
+                value={shipToAddress.name}
                 onChange={(e) =>
-                  setshipeToAddress({ ...shipeToAddress, name: e.target.value })
+                  setshipeToAddress({ ...shipToAddress, name: e.target.value })
                 }
                 className="p-2 border border-gray-300 rounded-md"
                 required
@@ -118,10 +110,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Phone"
-                value={shipeToAddress.phone}
+                value={shipToAddress.phone}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     phone: e.target.value,
                   })
                 }
@@ -131,10 +123,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Address Line 1"
-                value={shipeToAddress.addressLine1}
+                value={shipToAddress.addressLine1}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     addressLine1: e.target.value,
                   })
                 }
@@ -144,10 +136,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Address Line 2"
-                value={shipeToAddress.addressLine2}
+                value={shipToAddress.addressLine2}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     addressLine2: e.target.value,
                   })
                 }
@@ -156,10 +148,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="City"
-                value={shipeToAddress.cityLocality}
+                value={shipToAddress.cityLocality}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     cityLocality: e.target.value,
                   })
                 }
@@ -169,10 +161,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="State/Province"
-                value={shipeToAddress.stateProvince}
+                value={shipToAddress.stateProvince}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     stateProvince: e.target.value,
                   })
                 }
@@ -182,10 +174,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Postal Code"
-                value={shipeToAddress.postalCode}
+                value={shipToAddress.postalCode}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     postalCode: e.target.value,
                   })
                 }
@@ -195,10 +187,10 @@ const ShippingRatesPage = () => {
               <input
                 type="text"
                 placeholder="Country Code (e.g., PK)"
-                value={shipeToAddress.countryCode}
+                value={shipToAddress.countryCode}
                 onChange={(e) =>
                   setshipeToAddress({
-                    ...shipeToAddress,
+                    ...shipToAddress,
                     countryCode: e.target.value,
                   })
                 }
@@ -208,7 +200,6 @@ const ShippingRatesPage = () => {
             </div>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -262,7 +253,6 @@ const ShippingRatesPage = () => {
           </div>
         )}
 
-        {/* Create Label Button */}
         {rateId && (
           <div className="mt-8">
             <button
@@ -306,5 +296,4 @@ const ShippingRatesPage = () => {
     </div>
   );
 };
-
-export default ShippingRatesPage;
+export default ShippingRatesPage;  
